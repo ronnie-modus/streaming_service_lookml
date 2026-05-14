@@ -6,7 +6,7 @@ view: vw_user_engagement_daily {
 
   dimension_group: activity {
     type: time
-    timeframes: [raw, date, week, month, quarter, year]
+    timeframes: [raw, date, day_of_week, week, month, quarter, year]
     convert_tz: no
     datatype: date
     sql: ${TABLE}.activity_date ;;
