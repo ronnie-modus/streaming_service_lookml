@@ -1,26 +1,28 @@
 connection: "@{CONNECTION_NAME}"
 
-include: "/views/analytics/vw_user_engagement_daily.view.lkml"
-include: "/views/analytics/vw_content_performance.view.lkml"
-include: "/views/analytics/vw_subscription_revenue.view.lkml"
-include: "/views/analytics/vw_ad_campaign_performance.view.lkml"
-include: "/views/analytics/vw_account_lifecycle.view.lkml"
-include: "/views/analytics/vw_device_usage.view.lkml"
-include: "/views/analytics/vw_watchlist_conversion.view.lkml"
-include: "/views/analytics/vw_feature_adoption.view.lkml"
-include: "/views/analytics/vw_profile_activity_360.view.lkml"
-include: "/views/analytics/vw_content_catalog_summary.view.lkml"
+include: "/views/vw_user_engagement_daily.view.lkml"
+include: "/views/vw_content_performance.view.lkml"
+include: "/views/vw_subscription_revenue.view.lkml"
+include: "/views/vw_ad_campaign_performance.view.lkml"
+include: "/views/vw_account_lifecycle.view.lkml"
+include: "/views/vw_device_usage.view.lkml"
+include: "/views/vw_watchlist_conversion.view.lkml"
+include: "/views/vw_feature_adoption.view.lkml"
+include: "/views/vw_profile_activity_360.view.lkml"
+include: "/views/vw_content_catalog_summary.view.lkml"
 
-# We also include the base titles view so vw_content_performance and
-# vw_watchlist_conversion can drill back to the canonical title metadata.
+# Base views for drill-through joins.
 include: "/views/titles.view.lkml"
 include: "/views/profiles.view.lkml"
 include: "/views/accounts.view.lkml"
 
+# Dashboards
+include: "/dashboards/*.dashboard.lookml"
+
 # ============================================================================
 # Analytics Model
 # Pre-aggregated analytical views on top of `streaming_service`,
-# designed for direct consumption by Tableau and other BI tools.
+# designed for direct consumption by Tableau, Looker dashboards, and other BI tools.
 # All underlying BigQuery views are anchored to CURRENT_TIMESTAMP() so they
 # treat the dataset as a true "as of today" snapshot.
 # ============================================================================
@@ -51,7 +53,7 @@ explore: vw_content_performance {
     type: left_outer
     relationship: one_to_one
     sql_on: ${vw_content_performance.title_id} = ${titles.title_id} ;;
-    fields: []  # avoid duplicating fields; keep titles available for drill
+    fields: []
   }
 }
 
